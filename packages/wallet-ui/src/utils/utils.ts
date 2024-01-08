@@ -125,3 +125,7 @@ export const fetchWithTimeout = async (resource: string, options = { timeout: TI
   clearTimeout(id);
   return response;
 };
+
+export const isValidStarkName = (starkName: string): boolean => {
+  return /^(?:[a-z0-9-]{1,48}(?:[a-z0-9-]{1,48}[a-z0-9-])?\.)*[a-z0-9-]{1,48}\.stark$/.test(starkName);
+};

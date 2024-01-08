@@ -544,3 +544,8 @@ export const signMessage = async (
   const signatures = await signer.signMessage(typedDataMessage, signerUserAddress);
   return stark.signatureToDecimalArray(signatures);
 };
+
+export const getAddrFromStarkNameUtil = async (network: Network, starkName: string) => {
+  const provider = getProvider(network);
+  return provider.getAddressFromStarkName(starkName);
+};
