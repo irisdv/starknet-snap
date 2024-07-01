@@ -1,6 +1,87 @@
 # Changelog
 
 
+## [3.0.0](https://github.com/irisdv/starknet-snap/compare/starknet-snap-v2.8.0...starknet-snap-v3.0.0) (2024-07-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* starknet.js to v4.17.1 for new account deployment ([#42](https://github.com/irisdv/starknet-snap/issues/42))
+
+### Features
+
+* add declare method ([#159](https://github.com/irisdv/starknet-snap/issues/159)) ([538704e](https://github.com/irisdv/starknet-snap/commit/538704ee77dad7bd4ab0c0dc932aa9a4d23dec55))
+* add get starknet package ([#186](https://github.com/irisdv/starknet-snap/issues/186)) ([c44c00d](https://github.com/irisdv/starknet-snap/commit/c44c00d3340191d4b276579556c613308c32cc1d))
+* add method support get-starknet ([#173](https://github.com/irisdv/starknet-snap/issues/173)) ([a857eed](https://github.com/irisdv/starknet-snap/commit/a857eed85ff0a8acfcc54965e7419ea77333189e))
+* add multi transaction to snap ([#161](https://github.com/irisdv/starknet-snap/issues/161)) ([eaee37b](https://github.com/irisdv/starknet-snap/commit/eaee37b3dc9cf8402ad46a5f879c6c5a8601322e))
+* add open rpc json ([#167](https://github.com/irisdv/starknet-snap/issues/167)) ([3bab995](https://github.com/irisdv/starknet-snap/commit/3bab995dc6e36d8e1af51ca58afd280edf677134))
+* add strk token ([#204](https://github.com/irisdv/starknet-snap/issues/204)) ([86f3a82](https://github.com/irisdv/starknet-snap/commit/86f3a82dce3389be3690a34e62e87ea655af7380))
+* add switch network and get current network ([#174](https://github.com/irisdv/starknet-snap/issues/174)) ([560751f](https://github.com/irisdv/starknet-snap/commit/560751f8019e5aa1ef049b7df37086965acbe149))
+* add usdc usdt ([#176](https://github.com/irisdv/starknet-snap/issues/176)) ([a48dccb](https://github.com/irisdv/starknet-snap/commit/a48dccbcc0e1ca3217e7961d21cfcee2d45ddc0e))
+* add waiting mode for create account ([#251](https://github.com/irisdv/starknet-snap/issues/251)) ([0c91142](https://github.com/irisdv/starknet-snap/commit/0c911420595193672885d97d12769570a96316ce))
+* added changes to accommodate Voyager txn API responses changes ([#34](https://github.com/irisdv/starknet-snap/issues/34)) ([7990de0](https://github.com/irisdv/starknet-snap/commit/7990de0cbeadb100fd3d4b85bc3dfa6c7c607b30))
+* added specific address index in starkNet_createAccount and fixed Dapp to always use 0 ([#7](https://github.com/irisdv/starknet-snap/issues/7)) ([0607626](https://github.com/irisdv/starknet-snap/commit/0607626a2614ef01b964212ab08cdc225fc226a8))
+* added support for MM flask v10.24.1 and added starkNet_estimate… ([#50](https://github.com/irisdv/starknet-snap/issues/50)) ([88acb2f](https://github.com/irisdv/starknet-snap/commit/88acb2fbf7c4884a0bd142a70bc87a0366432fbe))
+* bump starknetjs to 6.7.0 ([#219](https://github.com/irisdv/starknet-snap/issues/219)) ([a07c3f1](https://github.com/irisdv/starknet-snap/commit/a07c3f1b852389d2369320fbcf9258ff73860b69))
+* cairo 1 support ([#202](https://github.com/irisdv/starknet-snap/issues/202)) ([c5e36e9](https://github.com/irisdv/starknet-snap/commit/c5e36e9a6f3c63155d990bf519cd6af6eb3cd006))
+* changed name from StarkNet to Starknet ([#138](https://github.com/irisdv/starknet-snap/issues/138)) ([a153ee1](https://github.com/irisdv/starknet-snap/commit/a153ee1a04e6c742b7a6fc326d0c7556af082ee5))
+* deprecate goerli network ([#217](https://github.com/irisdv/starknet-snap/issues/217)) ([168484d](https://github.com/irisdv/starknet-snap/commit/168484d5c1f1303f03a0db7f286a8e98ed50eb6a))
+* display Stark name in Sidebar ([#184](https://github.com/irisdv/starknet-snap/issues/184)) ([60f37da](https://github.com/irisdv/starknet-snap/commit/60f37da767504382a4a93a5ce944e6119bd6e304))
+* ensure txns in snap state have the same status and timestamp as… ([#10](https://github.com/irisdv/starknet-snap/issues/10)) ([7c6de7c](https://github.com/irisdv/starknet-snap/commit/7c6de7c17d67ca9813a7193d4ff17375cb0c1ceb))
+* estimate fees ([#162](https://github.com/irisdv/starknet-snap/issues/162)) ([0aee946](https://github.com/irisdv/starknet-snap/commit/0aee946753297adf676b4d67a50fb3082178e998))
+* fixed the starknet.js version to be v4.6.x ([#22](https://github.com/irisdv/starknet-snap/issues/22)) ([e71a87c](https://github.com/irisdv/starknet-snap/commit/e71a87c3aa4f5945214079e073cabef4e7c2dd0a))
+* implement network switch in UI ([#175](https://github.com/irisdv/starknet-snap/issues/175)) ([4b4ace7](https://github.com/irisdv/starknet-snap/commit/4b4ace7f41998c36c7924dcfb07dde061a714d45))
+* migrate metamask flask handle to metamask ([#121](https://github.com/irisdv/starknet-snap/issues/121)) ([5eff492](https://github.com/irisdv/starknet-snap/commit/5eff492cedb1bfa299e30b584fda8c936248fb9a))
+* New Apis for Snap ([#207](https://github.com/irisdv/starknet-snap/issues/207)) ([675647d](https://github.com/irisdv/starknet-snap/commit/675647d9d77ba512f87a6a1d8291941bb5c31038))
+* replace account class hash with constant value ([#178](https://github.com/irisdv/starknet-snap/issues/178)) ([f588c9c](https://github.com/irisdv/starknet-snap/commit/f588c9c902818f7b690838ef0b4b81e499ca4fc5))
+* sepolia network ([#187](https://github.com/irisdv/starknet-snap/issues/187)) ([45b0463](https://github.com/irisdv/starknet-snap/commit/45b04633149bf1b9568feeb8c2f475d52a0e45a8))
+* set Infura RPC node as the default provider for mainnet ([5d969d0](https://github.com/irisdv/starknet-snap/commit/5d969d085e1b4b2b670071757da9240c900c3478))
+* Sf 479 account deployment with first transaction ([#55](https://github.com/irisdv/starknet-snap/issues/55)) ([dedcbba](https://github.com/irisdv/starknet-snap/commit/dedcbba7291431c6912002e96e5ece595f8474fa))
+* sf 612 add alchemy provider ([#236](https://github.com/irisdv/starknet-snap/issues/236)) ([499f59d](https://github.com/irisdv/starknet-snap/commit/499f59dc05da5850f9b71d446267dcb62e079748))
+* sf 613 add cicd support for alchemy ([#237](https://github.com/irisdv/starknet-snap/issues/237)) ([033fdc6](https://github.com/irisdv/starknet-snap/commit/033fdc625c8a2c7eee91a17c4e175a6b78626c7a))
+* sf-510 deprecation of status field for snap ([#135](https://github.com/irisdv/starknet-snap/issues/135)) ([59711bb](https://github.com/irisdv/starknet-snap/commit/59711bbdbe6fd744fb35cf7cf18b1394d6f7c9e6))
+* sf-640 revamp cicd workflow ([#255](https://github.com/irisdv/starknet-snap/issues/255)) ([6faaf02](https://github.com/irisdv/starknet-snap/commit/6faaf024bd0b8112e5cea930a2bf8aad564a9454))
+* show upgrade dialog on get-starknet calls ([#247](https://github.com/irisdv/starknet-snap/issues/247)) ([4d8a2d7](https://github.com/irisdv/starknet-snap/commit/4d8a2d7948459033c91991c357f3fe2f620fe46b))
+* sign transaction ongoing ([#158](https://github.com/irisdv/starknet-snap/issues/158)) ([0b7a8b1](https://github.com/irisdv/starknet-snap/commit/0b7a8b106bd8dd3ddb7e4389f825d6dc35319374))
+* simplify dialog text render method ([#170](https://github.com/irisdv/starknet-snap/issues/170)) ([9f1c593](https://github.com/irisdv/starknet-snap/commit/9f1c59349f2370db1670a98a611c4f332e998a70))
+* starknet.js to v4.17.1 for new account deployment ([#42](https://github.com/irisdv/starknet-snap/issues/42)) ([f0df619](https://github.com/irisdv/starknet-snap/commit/f0df6194d149d04c21d9116aa5a3faaa64fa5cca))
+* switch from snap confirm to snap dialog ([#71](https://github.com/irisdv/starknet-snap/issues/71)) ([9350517](https://github.com/irisdv/starknet-snap/commit/9350517931421902aac456c3b4862ec2a1bcd5da))
+* switched back to use Infura endpoints except for estimateFeeBulk ([#76](https://github.com/irisdv/starknet-snap/issues/76)) ([9df15df](https://github.com/irisdv/starknet-snap/commit/9df15df1aab5324f00529a1e0bb24d5f0d33ad07))
+* temporarily reverted back to use StarkNet feeder gateway APIs as default provider ([#39](https://github.com/irisdv/starknet-snap/issues/39)) ([ed05913](https://github.com/irisdv/starknet-snap/commit/ed059130c6b4cddd28965302eb3824529d1328ac))
+* update snap demo html ([#160](https://github.com/irisdv/starknet-snap/issues/160)) ([b53cc7f](https://github.com/irisdv/starknet-snap/commit/b53cc7f7215ddf88eedaa9d187b2edb2b3e5a904))
+* update the response of stark net get transactions ([#51](https://github.com/irisdv/starknet-snap/issues/51)) ([56266a8](https://github.com/irisdv/starknet-snap/commit/56266a8fc5db80c0fb84fe50dae1dcf2c4ec9922))
+* update to use snap_getBip44Entropy ([#21](https://github.com/irisdv/starknet-snap/issues/21)) ([a619c66](https://github.com/irisdv/starknet-snap/commit/a619c66c3f2f97b53da4608f6133efd08ce26e34))
+* updated snap shasum ([43f9cbc](https://github.com/irisdv/starknet-snap/commit/43f9cbcde509725cfe73a28fd18c10793221377c))
+* updated yarn.lock and temporarily set Sequencer as the default provider for mainnet ([db01340](https://github.com/irisdv/starknet-snap/commit/db01340843e24a9f2915334ced77f8e40b13385d))
+* upgrade starknet.js to v4.22 and fix the dependabot alerts by u… ([#74](https://github.com/irisdv/starknet-snap/issues/74)) ([a3827ee](https://github.com/irisdv/starknet-snap/commit/a3827ee837160bfc767c199aef206dc474231997))
+* upgraded snap packages and patched luxon by upgrading yarn to v2 ([#79](https://github.com/irisdv/starknet-snap/issues/79)) ([94c2544](https://github.com/irisdv/starknet-snap/commit/94c25445b48a5d02ce4baba62621357c22e3bc89))
+* upgraded to starknet.js v4.5.0 and set Infura RPC node as the default provider ([d666ac7](https://github.com/irisdv/starknet-snap/commit/d666ac76ff02a12e935a24f1ef6a7df83fe10bca))
+
+
+### Bug Fixes
+
+* add mock to unit test on estimateFee and createAccount ([#166](https://github.com/irisdv/starknet-snap/issues/166)) ([d500465](https://github.com/irisdv/starknet-snap/commit/d500465dc95294b2a5e45707911cbf9dfd994c9b))
+* address field error ([#234](https://github.com/irisdv/starknet-snap/issues/234)) ([1aa523c](https://github.com/irisdv/starknet-snap/commit/1aa523c8123ccd016953314c9c63520602959651))
+* audit report ([#106](https://github.com/irisdv/starknet-snap/issues/106)) ([663720e](https://github.com/irisdv/starknet-snap/commit/663720ef2da91e7cb8f978f418be221ef8470e31))
+* audit report update version ([#110](https://github.com/irisdv/starknet-snap/issues/110)) ([32a8388](https://github.com/irisdv/starknet-snap/commit/32a83880fb24002323161a0e5234ad8f8bb1ca0e))
+* audit report update version ([#111](https://github.com/irisdv/starknet-snap/issues/111)) ([0e39bad](https://github.com/irisdv/starknet-snap/commit/0e39baddfccb0bd0799b8b8f5b542e00fbd42821))
+* audit report update version ([#112](https://github.com/irisdv/starknet-snap/issues/112)) ([5324859](https://github.com/irisdv/starknet-snap/commit/53248598d2e409e7a7f931c574a4485952ed1b1c))
+* change filter in the snap so that it gets the not received transactions when refreshing ([#63](https://github.com/irisdv/starknet-snap/issues/63)) ([74a612f](https://github.com/irisdv/starknet-snap/commit/74a612fce6278526b3ee9db1cf83e452c2fdd3f2))
+* createAccount response fields and updated test cases and the ope… ([#4](https://github.com/irisdv/starknet-snap/issues/4)) ([6c03853](https://github.com/irisdv/starknet-snap/commit/6c0385393658b1d047a29212b6691b3c819451ec))
+* deploy pipeline of production ([#89](https://github.com/irisdv/starknet-snap/issues/89)) ([8346bf1](https://github.com/irisdv/starknet-snap/commit/8346bf154874ba89580b393c9703bd7e216b3da0))
+* ensure account deployment for executTxn in get-starknet  ([#250](https://github.com/irisdv/starknet-snap/issues/250)) ([c98f2c7](https://github.com/irisdv/starknet-snap/commit/c98f2c74f5983736dedb960a5bf2ce57d9a3f99c))
+* fix account address ([#137](https://github.com/irisdv/starknet-snap/issues/137)) ([f406d43](https://github.com/irisdv/starknet-snap/commit/f406d43cacdf08894d94988a750af46680e91114))
+* get correct balance on snap homepage ([#214](https://github.com/irisdv/starknet-snap/issues/214)) ([781406e](https://github.com/irisdv/starknet-snap/commit/781406e691a47be8305643841fb6974376a89115))
+* lint & style ([#201](https://github.com/irisdv/starknet-snap/issues/201)) ([4436ec1](https://github.com/irisdv/starknet-snap/commit/4436ec1656659d44ca66b7f7e91111095ad5f194))
+* remove hello method ([#146](https://github.com/irisdv/starknet-snap/issues/146)) ([241c1a7](https://github.com/irisdv/starknet-snap/commit/241c1a7d9f08b5bdad1551b384516e359f4132eb))
+* sf 606 fix voyager cors with official provider ([#229](https://github.com/irisdv/starknet-snap/issues/229)) ([44ff4f1](https://github.com/irisdv/starknet-snap/commit/44ff4f131163c59972bf06a6f49d3bf3621da301))
+* snap homepage error when state omit ([#218](https://github.com/irisdv/starknet-snap/issues/218)) ([41de2ea](https://github.com/irisdv/starknet-snap/commit/41de2ea8e2c5d703f1e2780b888b865290630591))
+* snap homepage ui error due to goerli network deprecated ([#230](https://github.com/irisdv/starknet-snap/issues/230)) ([16ba5e9](https://github.com/irisdv/starknet-snap/commit/16ba5e9a94e7639670a138279db1ee8c22bc70a6))
+* typo of Autherize ([#224](https://github.com/irisdv/starknet-snap/issues/224)) ([cc635ea](https://github.com/irisdv/starknet-snap/commit/cc635ea05347f044311ee2ab14332bf3300c8924))
+* typos ([#172](https://github.com/irisdv/starknet-snap/issues/172)) ([d745354](https://github.com/irisdv/starknet-snap/commit/d7453547d7828050c4e98873d864d2361ccdf8a5))
+* update proposedName ([#133](https://github.com/irisdv/starknet-snap/issues/133)) ([28dfb15](https://github.com/irisdv/starknet-snap/commit/28dfb152c8e252ecc3c6ea0cdb42e202ac858fc3))
+* update starknet token name and symbol ([#210](https://github.com/irisdv/starknet-snap/issues/210)) ([4869b87](https://github.com/irisdv/starknet-snap/commit/4869b8706ac77709f2effbf9793922bd25e4b80e))
+
 ## [2.8.0](https://github.com/Consensys/starknet-snap/compare/starknet-snap-v2.7.0...starknet-snap-v2.8.0) (2024-06-21)
 
 
