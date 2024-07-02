@@ -180,3 +180,7 @@ export const shortenDomain = (domain: string, maxLength = 18) => {
   const shortenedPartLength = maxLength - ellipsis.length;
   return `${domain.substring(0, shortenedPartLength)}${ellipsis}`;
 };
+
+export const isValidStarkName = (starkName: string): boolean => {
+  return /^(?:[a-z0-9-]{1,48}(?:[a-z0-9-]{1,48}[a-z0-9-])?\.)*[a-z0-9-]{1,48}\.stark$/.test(starkName);
+};

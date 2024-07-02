@@ -48,6 +48,7 @@ import { signDeployAccountTransaction } from './signDeployAccountTransaction';
 import { upgradeAccContract } from './upgradeAccContract';
 import { logger } from './utils/logger';
 import { getStarkName } from './getStarkName';
+import { getAddrFromStarkName } from './getAddrFromStarkName';
 
 import type { OnRpcRequestHandler, OnHomePageHandler, OnInstallHandler, OnUpdateHandler } from '@metamask/snaps-sdk';
 import { InternalError, panel, row, divider, text, copyable } from '@metamask/snaps-sdk';
@@ -222,6 +223,9 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
 
       case 'starkNet_getStarkName':
         return await getStarkName(apiParams);
+
+      case 'starkNet_getAddrFromStarkName':
+        return getAddrFromStarkName(apiParams);
 
       default:
         throw new Error('Method not found.');

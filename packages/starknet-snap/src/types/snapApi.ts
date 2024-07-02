@@ -214,3 +214,7 @@ export interface SwitchNetworkRequestParams extends Authorizable, BaseRequestPar
 export interface GetStarkNameRequestParam extends BaseRequestParams {
   userAddress: string;
 }
+
+export interface GetAddrFromStarkNameRequestParam extends BaseRequestParams {
+  starkName: string;
+}

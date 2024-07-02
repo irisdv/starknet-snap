@@ -800,3 +800,10 @@ export const getStarkNameUtil = async (network: Network, userAddress: string) =>
   const provider = getProvider(network);
   return Account.getStarkName(provider, userAddress);
 };
+
+export const getAddrFromStarkNameUtil = async (network: Network, starkName: string) => {
+  console.log('in utils', starkName);
+  const provider = getProvider(network);
+  // return provider.getAddressFromStarkName(starkName);
+  return Account.getAddressFromStarkName(provider, starkName);
+};
