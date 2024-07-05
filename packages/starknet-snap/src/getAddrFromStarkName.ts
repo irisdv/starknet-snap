@@ -9,17 +9,12 @@ export async function getAddrFromStarkName(params: ApiParams) {
     const { state, requestParams } = params;
     const requestParamsObj = requestParams as GetAddrFromStarkNameRequestParam;
 
-    logger.log(`1`);
-
     if (!requestParamsObj.starkName) {
       throw new Error(`The given stark name need to be non-empty string, got: ${toJson(requestParamsObj)}`);
     }
 
-    logger.log(`2`);
-
     const starkName = requestParamsObj.starkName;
 
-    logger.log(`3`);
     const network = getNetworkFromChainId(state, requestParamsObj.chainId);
 
     const resp = await getAddrFromStarkNameUtil(network, starkName);

@@ -27,6 +27,7 @@ export const SendModalView = ({ closeModal }: Props) => {
   const networks = useAppSelector((state) => state.networks);
   const chainId = networks?.items[networks.activeNetwork]?.chainId;
   const wallet = useAppSelector((state) => state.wallet);
+  const { getAddrFromStarkName } = useStarkNetSnap();
   const [summaryModalOpen, setSummaryModalOpen] = useState(false);
   const [fields, setFields] = useState({
     amount: '',
@@ -34,7 +35,6 @@ export const SendModalView = ({ closeModal }: Props) => {
     chainId: networks.items.length > 0 ? networks.items[networks.activeNetwork].chainId : '',
   });
   const [errors, setErrors] = useState({ amount: '', address: '' });
-  const { getAddrFromStarkName } = useStarkNetSnap();
 
   const handleChange = (fieldName: string, fieldValue: string) => {
     //Check if input amount does not exceed user balance
@@ -57,22 +57,23 @@ export const SendModalView = ({ closeModal }: Props) => {
         break;
       case 'address':
         if (fieldValue !== '') {
-          console.log('fieldValue', fieldValue);
           if (isValidAddress(fieldValue)) {
             break;
           } else if (isValidStarkName(fieldValue)) {
-            console.log('isValid');
-            getAddrFromStarkName(chainId, fieldValue).then((address) => {
-              console.log('address', address);
-              if (isValidAddress(address)) {
-                fieldValue = address;
-              } else {
-                setErrors((prevErrors) => ({
-                  ...prevErrors,
-                  address: '.stark name doesn’t exist',
-                }));
-              }
-            });
+            getAddrFromStarkName(fieldValue, chainId)
+              .then((address) => {
+                if (isValidAddress(address)) {
+                  fieldValue = address;
+                } else {
+                  setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    address: '.stark name doesn’t exist',
+                  }));
+                }
+              })
+              .catch((error) => {
+                console.log('error', error);
+              });
           } else {
             setErrors((prevErrors) => ({
               ...prevErrors,
@@ -81,16 +82,6 @@ export const SendModalView = ({ closeModal }: Props) => {
           }
         }
         break;
-      // case 'address':
-      //   if (fieldValue !== '') {
-      //     if (!isValidAddress(fieldValue)) {
-      //       setErrors((prevErrors) => ({
-      //         ...prevErrors,
-      //         address: 'Invalid address format',
-      //       }));
-      //     }
-      //   }
-      //   break;
     }
 
     setFields((prevFields) => ({

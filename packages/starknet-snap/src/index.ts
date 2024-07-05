@@ -225,7 +225,7 @@ export const onRpcRequest: OnRpcRequestHandler = async ({ origin, request }) => 
         return await getStarkName(apiParams);
 
       case 'starkNet_getAddrFromStarkName':
-        return getAddrFromStarkName(apiParams);
+        return await getAddrFromStarkName(apiParams);
 
       default:
         throw new Error('Method not found.');
