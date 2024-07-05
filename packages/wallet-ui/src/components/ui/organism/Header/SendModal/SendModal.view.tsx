@@ -60,20 +60,16 @@ export const SendModalView = ({ closeModal }: Props) => {
           if (isValidAddress(fieldValue)) {
             break;
           } else if (isValidStarkName(fieldValue)) {
-            getAddrFromStarkName(fieldValue, chainId)
-              .then((address) => {
-                if (isValidAddress(address)) {
-                  fieldValue = address;
-                } else {
-                  setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    address: '.stark name doesn’t exist',
-                  }));
-                }
-              })
-              .catch((error) => {
-                console.log('error', error);
-              });
+            getAddrFromStarkName(fieldValue, chainId).then((address) => {
+              if (isValidAddress(address)) {
+                fieldValue = address;
+              } else {
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  address: '.stark name doesn’t exist',
+                }));
+              }
+            });
           } else {
             setErrors((prevErrors) => ({
               ...prevErrors,
