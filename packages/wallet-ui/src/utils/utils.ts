@@ -8,18 +8,27 @@ import {
   TIMEOUT_DURATION,
   MIN_ACC_CONTRACT_VERSION,
 } from './constants';
-import { Erc20Token, Erc20TokenBalance } from 'types';
+import { Erc20Token, Erc20TokenBalance, TokenBalance } from 'types';
 import { constants } from 'starknet';
 
 export const shortenAddress = (address: string, num = 3) => {
   if (!address) return '';
-  return !!address && `${address.substring(0, num + 2)}...${address.substring(address.length - num - 1)}`;
+  return (
+    !!address &&
+    `${address.substring(0, num + 2)}...${address.substring(
+      address.length - num - 1,
+    )}`
+  );
 };
 
-export const openExplorerTab = (address: string, type = 'contract', chainId = SEPOLIA_CHAINID) => {
+export const openExplorerTab = (
+  address: string,
+  type = 'contract',
+  chainId = SEPOLIA_CHAINID,
+) => {
   let explorerUrl = STARKNET_SEPOLIA_TESTNET_EXPLORER;
   switch (chainId) {
-    case constants.StarknetChainId.MAINNET:
+    case constants.StarknetChainId.SN_MAIN:
       explorerUrl = STARKNET_MAINNET_EXPLORER;
       break;
     case SEPOLIA_CHAINID:
@@ -38,18 +47,29 @@ export const addMissingPropertiesToToken = (
   balance?: string,
   usdPrice?: number,
 ): Erc20TokenBalance => {
+  // when balance is undefined, use 0
+  const hexBalance = balance ?? '0x0';
+
   return {
     ...token,
-    amount: ethers.BigNumber.from(balance ? balance : '0x0'),
+    amount: ethers.BigNumber.from(hexBalance),
     usdPrice: usdPrice,
   };
 };
 
-export const getHumanReadableAmount = (asset: Erc20TokenBalance, assetAmount?: string) => {
-  const amountStr = assetAmount ? assetAmount : ethers.utils.formatUnits(asset.amount, asset.decimals);
+export const getHumanReadableAmount = (
+  asset: Erc20TokenBalance,
+  assetAmount?: string,
+): string => {
+  const amountStr = assetAmount
+    ? assetAmount
+    : ethers.utils.formatUnits(asset.amount, asset.decimals);
   const indexDecimal = amountStr.indexOf('.');
   const integerPart = amountStr.substring(0, indexDecimal);
-  let decimalPart = amountStr.substring(indexDecimal + 1, indexDecimal + 5 - integerPart.length);
+  let decimalPart = amountStr.substring(
+    indexDecimal + 1,
+    indexDecimal + 5 - integerPart.length,
+  );
   if (integerPart === '0') {
     decimalPart = amountStr.substring(indexDecimal + 1);
   }
@@ -62,11 +82,30 @@ export const getHumanReadableAmount = (asset: Erc20TokenBalance, assetAmount?: s
   return amountStr.substring(0, indexDecimal + firstNonZeroIndex + 3);
 };
 
-export const getMaxDecimalsReadable = (asset: Erc20TokenBalance, assetAmount?: string) => {
-  const amountStr = assetAmount ? assetAmount : ethers.utils.formatUnits(asset.amount, asset.decimals);
+export const getSpendableTotalBalance = (asset: Erc20TokenBalance): string => {
+  if (asset.amount === undefined) {
+    throw new Error('Amount can not be undefined');
+  }
+  const amount = getHumanReadableAmount(
+    asset,
+    ethers.utils.formatUnits(asset.amount, asset.decimals),
+  );
+
+  return amount;
+};
+
+export const getMaxDecimalsReadable = (
+  asset: Erc20TokenBalance,
+  assetAmount?: string,
+) => {
+  const amountStr = assetAmount
+    ? assetAmount
+    : ethers.utils.formatUnits(asset.amount, asset.decimals);
   const indexDecimal = amountStr.indexOf('.');
   const decimalPart = amountStr.substring(indexDecimal + 1).split('');
-  const firstNonZeroIndexReverse = decimalPart.reverse().findIndex((char) => char !== '0');
+  const firstNonZeroIndexReverse = decimalPart
+    .reverse()
+    .findIndex((char) => char !== '0');
   if (firstNonZeroIndexReverse !== -1) {
     let lastNonZeroIndex = amountStr.length - firstNonZeroIndexReverse;
     if (lastNonZeroIndex - indexDecimal > DECIMALS_DISPLAYED_MAX_LENGTH) {
@@ -77,7 +116,11 @@ export const getMaxDecimalsReadable = (asset: Erc20TokenBalance, assetAmount?: s
   return amountStr.substring(0, indexDecimal);
 };
 
-export const getAmountPrice = (asset: Erc20TokenBalance, assetAmount: number, usdMode: boolean) => {
+export const getAmountPrice = (
+  asset: Erc20TokenBalance,
+  assetAmount: number,
+  usdMode: boolean,
+) => {
   if (asset.usdPrice) {
     if (!usdMode) {
       const result = asset.usdPrice * assetAmount;
@@ -108,7 +151,10 @@ export const isSpecialInputKey = (event: KeyboardEvent<HTMLInputElement>) => {
   );
 };
 
-export const fetchWithTimeout = async (resource: string, options = { timeout: TIMEOUT_DURATION }) => {
+export const fetchWithTimeout = async (
+  resource: string,
+  options = { timeout: TIMEOUT_DURATION },
+) => {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), options.timeout);
   const response = await fetch(resource, {
@@ -142,7 +188,11 @@ export const wait = (delay: number) => {
 
 export const retry = async (
   fn: () => Promise<boolean>,
-  options?: { delay?: number; maxAttempts?: number; onFailedAttempt?: CallableFunction },
+  options?: {
+    delay?: number;
+    maxAttempts?: number;
+    onFailedAttempt?: CallableFunction;
+  },
 ): Promise<boolean> => {
   let retry = options?.maxAttempts ?? 10;
   const delay = options?.delay ?? 1000;
@@ -155,7 +205,10 @@ export const retry = async (
         return result;
       }
     } catch (e) {
-      if (options?.onFailedAttempt && typeof options?.onFailedAttempt === 'function') {
+      if (
+        options?.onFailedAttempt &&
+        typeof options?.onFailedAttempt === 'function'
+      ) {
         options.onFailedAttempt(e);
       } else {
         //eslint-disable-next-line no-console
@@ -180,6 +233,15 @@ export const shortenDomain = (domain: string, maxLength = 18) => {
   const shortenedPartLength = maxLength - ellipsis.length;
   return `${domain.substring(0, shortenedPartLength)}${ellipsis}`;
 };
+
+export function getTokenBalanceWithDetails(
+  tokenBalance: TokenBalance,
+  token: Erc20Token,
+  tokenUSDPrice?: number,
+): Erc20TokenBalance {
+  const { balance } = tokenBalance;
+  return addMissingPropertiesToToken(token, balance.toString(), tokenUSDPrice);
+}
 
 export const isValidStarkName = (starkName: string): boolean => {
   return /^(?:[a-z0-9-]{1,48}(?:[a-z0-9-]{1,48}[a-z0-9-])?\.)*[a-z0-9-]{1,48}\.stark$/.test(starkName);

@@ -8,7 +8,10 @@ import { STARKNET_SEPOLIA_TESTNET_NETWORK } from '../../src/utils/constants';
 import { token1, token2 } from '../constants.test';
 import * as snapUtils from '../../src/utils/snapUtils';
 import { Mutex } from 'async-mutex';
-import { ApiParams, GetStoredErc20TokensRequestParams } from '../../src/types/snapApi';
+import {
+  ApiParams,
+  GetStoredErc20TokensRequestParams,
+} from '../../src/types/snapApi';
 
 chai.use(sinonChai);
 const sandbox = sinon.createSandbox();
@@ -34,7 +37,9 @@ describe('Test function: getStoredErc20Tokens', function () {
   });
 
   it('should get the stored ERC-20 tokens correctly', async function () {
-    const requestObject: GetStoredErc20TokensRequestParams = {};
+    const requestObject: GetStoredErc20TokensRequestParams = {
+      chainId: STARKNET_SEPOLIA_TESTNET_NETWORK.chainId,
+    };
     apiParams.requestParams = requestObject;
     const result = await getStoredErc20Tokens(apiParams);
     expect(walletStub.rpcStubs.snap_manageState).not.to.have.been.called;
@@ -44,7 +49,9 @@ describe('Test function: getStoredErc20Tokens', function () {
 
   it('should throw error if getErc20Tokens failed', async function () {
     sandbox.stub(snapUtils, 'getErc20Tokens').throws(new Error());
-    const requestObject: GetStoredErc20TokensRequestParams = {};
+    const requestObject: GetStoredErc20TokensRequestParams = {
+      chainId: STARKNET_SEPOLIA_TESTNET_NETWORK.chainId,
+    };
     apiParams.requestParams = requestObject;
 
     let result;

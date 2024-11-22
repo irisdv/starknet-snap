@@ -1,5 +1,4 @@
-import { AccContract, MetaMaskProvider, Network, RequestSnapResponse } from './type';
-import {
+import type {
   Abi,
   AllowArray,
   Call,
@@ -14,9 +13,13 @@ import {
   TypedData,
 } from 'starknet';
 
+import type { AccContract, DeploymentData, MetaMaskProvider, Network, RequestSnapResponse } from './type';
+
 export class MetaMaskSnap {
   #provider: MetaMaskProvider;
+
   #snapId: string;
+
   #version: string;
 
   constructor(snapId: string, version: string, provider: MetaMaskProvider) {
@@ -25,148 +28,189 @@ export class MetaMaskSnap {
     this.#version = version;
   }
 
-  async getPubKey(userAddress: string): Promise<string> {
+  async getPubKey({ userAddress, chainId }: { userAddress: string; chainId?: string }): Promise<string> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_extractPublicKey',
-          params: {
+          params: await this.#getSnapParams({
             userAddress,
-            ...(await this.#getSnapParams()),
-          },
+            chainId,
+          }),
         },
       },
     })) as string;
   }
 
-  async signTransaction(
-    signerAddress: string,
-    transactions: Call[],
-    transactionsDetail: InvocationsSignerDetails,
-    abis?: Abi[],
-  ): Promise<Signature> {
+  async signTransaction({
+    address,
+    transactions,
+    transactionsDetail,
+    chainId,
+  }: {
+    address: string;
+    transactions: Call[];
+    transactionsDetail: InvocationsSignerDetails;
+    chainId?: string;
+  }): Promise<Signature> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_signTransaction',
-          params: this.removeUndefined({
-            signerAddress,
+          params: await this.#getSnapParams({
+            address,
             transactions,
             transactionsDetail,
-            abis: abis,
-            ...(await this.#getSnapParams()),
+            chainId,
           }),
         },
       },
     })) as Signature;
   }
 
-  async signDeployAccountTransaction(
-    signerAddress: string,
-    transaction: DeployAccountSignerDetails,
-  ): Promise<Signature> {
+  async signDeployAccountTransaction({
+    signerAddress,
+    transaction,
+    chainId,
+  }: {
+    signerAddress: string;
+    transaction: DeployAccountSignerDetails;
+    chainId?: string;
+  }): Promise<Signature> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_signDeployAccountTransaction',
-          params: this.removeUndefined({
+          params: await this.#getSnapParams({
             signerAddress,
             transaction,
-            ...(await this.#getSnapParams()),
+            chainId,
           }),
         },
       },
     })) as Signature;
   }
 
-  async signDeclareTransaction(signerAddress: string, transaction: DeclareSignerDetails): Promise<Signature> {
+  async signDeclareTransaction({
+    address,
+    details,
+    chainId,
+  }: {
+    address: string;
+    details: DeclareSignerDetails;
+    chainId?: string;
+  }): Promise<Signature> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_signDeclareTransaction',
-          params: this.removeUndefined({
-            signerAddress,
-            transaction,
-            ...(await this.#getSnapParams()),
+          params: await this.#getSnapParams({
+            address,
+            details,
+            chainId,
           }),
         },
       },
     })) as Signature;
   }
 
-  async execute(
-    senderAddress: string,
-    txnInvocation: AllowArray<Call>,
-    abis?: Abi[],
-    invocationsDetails?: InvocationsDetails,
-  ): Promise<InvokeFunctionResponse> {
+  async execute({
+    address,
+    calls,
+    abis,
+    details,
+    chainId,
+  }: {
+    address: string;
+    calls: AllowArray<Call>;
+    abis?: Abi[];
+    details?: InvocationsDetails;
+    chainId?: string;
+  }): Promise<InvokeFunctionResponse> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_executeTxn',
-          params: this.removeUndefined({
-            senderAddress,
-            txnInvocation,
-            invocationsDetails,
+          params: await this.#getSnapParams({
+            address,
+            calls,
+            details,
             abis,
-            ...(await this.#getSnapParams()),
+            chainId,
           }),
         },
       },
     })) as InvokeFunctionResponse;
   }
 
-  async signMessage(typedDataMessage: TypedData, enableAuthorize: boolean, signerAddress: string): Promise<Signature> {
+  async signMessage({
+    typedDataMessage,
+    enableAuthorize,
+    address,
+    chainId,
+  }: {
+    typedDataMessage: TypedData;
+    enableAuthorize: boolean;
+    address: string;
+    chainId?: string;
+  }): Promise<Signature> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_signMessage',
-          params: this.removeUndefined({
-            signerAddress,
+          params: await this.#getSnapParams({
+            address,
             typedDataMessage,
-            enableAuthorize: enableAuthorize,
-            ...(await this.#getSnapParams()),
+            enableAuthorize,
+            chainId,
           }),
         },
       },
     })) as Signature;
   }
 
-  async declare(
-    senderAddress: string,
-    contractPayload: DeclareContractPayload,
-    invocationsDetails?: InvocationsDetails,
-  ): Promise<DeclareContractResponse> {
+  async declare({
+    senderAddress,
+    contractPayload,
+    invocationsDetails,
+    chainId,
+  }: {
+    senderAddress: string;
+    contractPayload: DeclareContractPayload;
+    invocationsDetails?: InvocationsDetails;
+    chainId?: string;
+  }): Promise<DeclareContractResponse> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_declareContract',
-          params: this.removeUndefined({
+          params: await this.#getSnapParams({
             senderAddress,
             contractPayload,
             invocationsDetails,
-            ...(await this.#getSnapParams()),
+            chainId,
           }),
         },
       },
     })) as DeclareContractResponse;
   }
 
-  async getNetwork(chainId: string): Promise<Network | undefined> {
+  // Method will be deprecated, replaced by get current network
+  async getNetwork(chainId): Promise<Network | undefined> {
     const response = (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
@@ -176,41 +220,51 @@ export class MetaMaskSnap {
           params: {},
         },
       },
-    })) as unknown as Network[];
+    })) as Network[];
 
-    const network = response.find((n) => {
-      return n.chainId === chainId;
+    const network = response.find((item) => {
+      return item.chainId === chainId;
     });
 
     return network;
   }
 
   async recoverDefaultAccount(chainId: string): Promise<AccContract> {
-    const result = await this.recoverAccounts(chainId, 0, 1, 1);
+    const result = await this.recoverAccounts({
+      chainId,
+      startScanIndex: 0,
+      maxScanned: 1,
+      maxMissed: 1,
+    });
     return result[0];
   }
 
-  async recoverAccounts(
-    chainId: string,
+  async recoverAccounts({
+    chainId,
     startScanIndex = 0,
     maxScanned = 1,
     maxMissed = 1,
-  ): Promise<Array<AccContract>> {
+  }: {
+    chainId?: string;
+    startScanIndex?: number;
+    maxScanned?: number;
+    maxMissed?: number;
+  }): Promise<AccContract[]> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_recoverAccounts',
-          params: {
+          params: await this.#getSnapParams({
             startScanIndex,
             maxScanned,
             maxMissed,
             chainId,
-          },
+          }),
         },
       },
-    })) as Array<AccContract>;
+    })) as AccContract[];
   }
 
   async switchNetwork(chainId: string): Promise<boolean> {
@@ -229,14 +283,25 @@ export class MetaMaskSnap {
     })) as boolean;
   }
 
-  async addStarknetChain(chainName: string, chainId: string, rpcUrl: string, explorerUrl: string): Promise<boolean> {
+  // Method to be deprecated, no longer supported
+  async addStarknetChain({
+    chainName,
+    chainId,
+    rpcUrl,
+    explorerUrl,
+  }: {
+    chainName: string;
+    chainId: string;
+    rpcUrl: string;
+    explorerUrl: string;
+  }): Promise<boolean> {
     return (await this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_addNetwork',
-          params: this.removeUndefined({
+          params: this.#removeUndefined({
             networkName: chainName,
             networkChainId: chainId,
             networkNodeUrl: rpcUrl,
@@ -247,18 +312,31 @@ export class MetaMaskSnap {
     })) as boolean;
   }
 
-  async watchAsset(address: string, name: string, symbol: string, decimals: number): Promise<boolean> {
+  async watchAsset({
+    address,
+    name,
+    symbol,
+    decimals,
+    chainId,
+  }: {
+    address: string;
+    name: string;
+    symbol: string;
+    decimals: number;
+    chainId?: string;
+  }): Promise<boolean> {
     return this.#provider.request({
       method: 'wallet_invokeSnap',
       params: {
         snapId: this.#snapId,
         request: {
           method: 'starkNet_addErc20Token',
-          params: this.removeUndefined({
+          params: await this.#getSnapParams({
             tokenAddress: address,
             tokenName: name,
             tokenSymbol: symbol,
             tokenDecimals: decimals,
+            chainId,
           }),
         },
       },
@@ -275,42 +353,66 @@ export class MetaMaskSnap {
           params: {},
         },
       },
-    })) as unknown as Network;
+    })) as Network;
 
     return response;
   }
 
-  async #getSnapParams() {
-    const network = await this.getCurrentNetwork();
-    return {
-      chainId: network.chainId,
-    };
+  async getDeploymentData({ chainId, address }: { chainId: string; address: string }): Promise<DeploymentData> {
+    const response = (await this.#provider.request({
+      method: 'wallet_invokeSnap',
+      params: {
+        snapId: this.#snapId,
+        request: {
+          method: 'starkNet_getDeploymentData',
+          params: {
+            chainId,
+            address,
+          },
+        },
+      },
+    })) as DeploymentData;
+
+    return response;
   }
 
-  static async GetProvider(window: { ethereum?: unknown }) {
+  async #getSnapParams(params: Record<string, unknown> & { chainId?: string }): Promise<Record<string, unknown>> {
+    return this.#removeUndefined({
+      ...params,
+      chainId: params.chainId ?? (await this.getCurrentNetwork()).chainId,
+    });
+  }
+
+  static async getProvider(window: {
+    ethereum?: {
+      detected?: MetaMaskProvider[];
+      providers?: MetaMaskProvider[];
+    };
+  }) {
     const { ethereum } = window;
     if (!ethereum) {
       return null;
     }
-    let providers = [ethereum];
+    let providers: MetaMaskProvider[] = [ethereum as unknown as MetaMaskProvider];
 
-    //ethereum.detected or ethereum.providers may exist when more than 1 wallet installed
-    if (ethereum.hasOwnProperty('detected')) {
-      providers = ethereum['detected'];
-    } else if (ethereum.hasOwnProperty('providers')) {
-      providers = ethereum['providers'];
+    // ethereum.detected or ethereum.providers may exist when more than 1 wallet installed
+
+    if (Object.prototype.hasOwnProperty.call(ethereum, 'detected')) {
+      providers = ethereum.detected as unknown as MetaMaskProvider[];
+    } else if (Object.prototype.hasOwnProperty.call(ethereum, 'providers')) {
+      providers = ethereum.providers as unknown as MetaMaskProvider[];
     }
 
-    //delect provider by sending request
+    // detect provider by sending request
     for (const provider of providers) {
-      if (provider && (await MetaMaskSnap.IsSupportSnap(provider as MetaMaskProvider))) {
+      if (provider && (await MetaMaskSnap.isSupportSnap(provider))) {
         return provider;
       }
     }
     return null;
   }
 
-  static async IsSupportSnap(provider: MetaMaskProvider) {
+  static async isSupportSnap(provider: MetaMaskProvider) {
     try {
       await provider.request({
         method: 'wallet_getSnaps',
@@ -328,7 +430,7 @@ export class MetaMaskSnap {
         [this.#snapId]: { version: this.#version },
       },
     })) as RequestSnapResponse;
-    if (!response || !response[this.#snapId]?.enabled) {
+    if (!response?.[this.#snapId]?.enabled) {
       return false;
     }
     return true;
@@ -346,13 +448,13 @@ export class MetaMaskSnap {
         },
       });
       return true;
-    } catch (err) {
+    } catch (error) {
       return false;
     }
   }
 
-  removeUndefined(obj: Record<string, unknown>) {
+  #removeUndefined(obj: Record<string, unknown>) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== undefined));
+    return Object.fromEntries(Object.entries(obj).filter(([_, val]) => val !== undefined));
   }
 }

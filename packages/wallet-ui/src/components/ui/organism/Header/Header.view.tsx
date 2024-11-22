@@ -5,7 +5,7 @@ import { getAmountPrice } from 'utils/utils';
 import { Button } from 'components/ui/atom/Button';
 import { AssetQuantity } from 'components/ui/molecule/AssetQuantity';
 import { PopIn } from 'components/ui/molecule/PopIn';
-import { getHumanReadableAmount } from 'utils/utils';
+import { getSpendableTotalBalance } from 'utils/utils';
 import { Buttons, HeaderButton, Wrapper } from './Header.style';
 import { ReceiveModal } from './ReceiveModal';
 import { SendModal } from './SendModal';
@@ -26,10 +26,17 @@ export const HeaderView = ({ address }: Props) => {
 
   const getUSDValue = () => {
     const amountFloat = parseFloat(
-      ethers.utils.formatUnits(wallet.erc20TokenBalanceSelected.amount, wallet.erc20TokenBalanceSelected.decimals),
+      ethers.utils.formatUnits(
+        wallet.erc20TokenBalanceSelected.amount,
+        wallet.erc20TokenBalanceSelected.decimals,
+      ),
     );
     if (wallet.erc20TokenBalanceSelected.usdPrice)
-      return getAmountPrice(wallet.erc20TokenBalanceSelected, amountFloat, false);
+      return getAmountPrice(
+        wallet.erc20TokenBalanceSelected,
+        amountFloat,
+        false,
+      );
     return '';
   };
 
@@ -38,7 +45,11 @@ export const HeaderView = ({ address }: Props) => {
     if (chain && address) {
       clearTimeout(timeoutHandle.current); // cancel the timeout that was in-flight
       timeoutHandle.current = setTimeout(async () => {
-        await updateTokenBalance(wallet.erc20TokenBalanceSelected.address, address, chain);
+        await updateTokenBalance(
+          wallet.erc20TokenBalanceSelected.address,
+          address,
+          chain,
+        );
       }, TOKEN_BALANCE_REFRESH_FREQUENCY);
       return () => clearTimeout(timeoutHandle.current);
     }
@@ -53,14 +64,22 @@ export const HeaderView = ({ address }: Props) => {
     <Wrapper>
       <AssetQuantity
         USDValue={getUSDValue()}
-        currencyValue={getHumanReadableAmount(wallet.erc20TokenBalanceSelected)}
+        currencyValue={getSpendableTotalBalance(
+          wallet.erc20TokenBalanceSelected,
+        )}
         currency={wallet.erc20TokenBalanceSelected.symbol}
         size="big"
         centered
       />
       <Buttons>
-        <HeaderButton onClick={() => setReceiveOpen(true)}>Receive</HeaderButton>
-        <Button onClick={() => handleSendClick()} backgroundTransparent borderVisible>
+        <HeaderButton onClick={() => setReceiveOpen(true)}>
+          Receive
+        </HeaderButton>
+        <Button
+          onClick={() => handleSendClick()}
+          backgroundTransparent
+          borderVisible
+        >
           Send
         </Button>
       </Buttons>

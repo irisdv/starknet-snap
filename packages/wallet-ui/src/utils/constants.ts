@@ -1,10 +1,11 @@
 import { constants } from 'starknet';
+import { FeeToken } from 'types';
 
 // TODO: Importing directly from constants when upgrading to starknet.js v6
 export const SEPOLIA_CHAINID = '0x534e5f5345504f4c4941';
 
 export const TOKENS: any = {
-  [constants.StarknetChainId.MAINNET]: {
+  [constants.StarknetChainId.SN_MAIN]: {
     '0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7': {
       coingeckoId: 'ethereum',
     },
@@ -40,7 +41,8 @@ export const COINGECKO_API = 'https://api.coingecko.com/api/v3/';
 
 export const STARKNET_MAINNET_EXPLORER = 'https://voyager.online/';
 
-export const STARKNET_SEPOLIA_TESTNET_EXPLORER = 'https://sepolia.voyager.online/';
+export const STARKNET_SEPOLIA_TESTNET_EXPLORER =
+  'https://sepolia.voyager.online/';
 
 export const SNAPS_DOC_URL = 'https://docs.metamask.io/guide/snaps.html';
 
@@ -60,3 +62,5 @@ export const TIMEOUT_DURATION = 10000;
 
 export const MIN_ACC_CONTRACT_VERSION = [0, 3, 0];
 export const DUMMY_ADDRESS = '0xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+
+export const DEFAULT_FEE_TOKEN = FeeToken.ETH;

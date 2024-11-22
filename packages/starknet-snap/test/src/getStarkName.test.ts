@@ -5,7 +5,7 @@ import { WalletMock } from '../wallet.mock.test';
 import { getStarkName } from '../../src/getStarkName';
 import * as utils from '../../src/utils/starknetUtils';
 import { SnapState } from '../../src/types/snapState';
-import { STARKNET_SEPOLIA_TESTNET_NETWORK } from '../../src/utils/constants';
+import { STARKNET_MAINNET_NETWORK } from '../../src/utils/constants';
 import { Mutex } from 'async-mutex';
 import { ApiParams, GetStarkNameRequestParam } from '../../src/types/snapApi';
 
@@ -17,7 +17,7 @@ describe('Test function: getStarkName', function () {
   const state: SnapState = {
     accContracts: [],
     erc20Tokens: [],
-    networks: [STARKNET_SEPOLIA_TESTNET_NETWORK],
+    networks: [STARKNET_MAINNET_NETWORK],
     transactions: [],
   };
   const apiParams: ApiParams = {
@@ -37,7 +37,8 @@ describe('Test function: getStarkName', function () {
       return 'testName.stark';
     });
     const requestObject: GetStarkNameRequestParam = {
-      userAddress: '0x01c744953f1d671673f46a9179a58a7e58d9299499b1e076cdb908e7abffe69f',
+      userAddress:
+        '0x01c744953f1d671673f46a9179a58a7e58d9299499b1e076cdb908e7abffe69f',
     };
     apiParams.requestParams = requestObject;
     const result = await getStarkName(apiParams);
@@ -47,7 +48,8 @@ describe('Test function: getStarkName', function () {
   it('should throw error if getStarkNameUtil failed', async function () {
     sandbox.stub(utils, 'getStarkNameUtil').throws(new Error());
     const requestObject: GetStarkNameRequestParam = {
-      userAddress: '0x01c744953f1d671673f46a9179a58a7e58d9299499b1e076cdb908e7abffe69f',
+      userAddress:
+        '0x01c744953f1d671673f46a9179a58a7e58d9299499b1e076cdb908e7abffe69f',
     };
     apiParams.requestParams = requestObject;
 

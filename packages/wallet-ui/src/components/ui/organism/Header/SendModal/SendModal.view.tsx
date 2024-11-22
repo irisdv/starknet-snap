@@ -17,6 +17,9 @@ import { ethers } from 'ethers';
 import { AddressInput } from 'components/ui/molecule/AddressInput';
 import { isValidAddress, isValidStarkName } from 'utils/utils';
 import { Bold, Normal } from '../../ConnectInfoModal/ConnectInfoModal.style';
+import { DropDown } from 'components/ui/molecule/DropDown';
+import { DEFAULT_FEE_TOKEN } from 'utils/constants';
+import { FeeToken } from 'types';
 import { useStarkNetSnap } from 'services';
 
 interface Props {
@@ -32,7 +35,11 @@ export const SendModalView = ({ closeModal }: Props) => {
   const [fields, setFields] = useState({
     amount: '',
     address: '',
-    chainId: networks.items.length > 0 ? networks.items[networks.activeNetwork].chainId : '',
+    chainId:
+      networks.items.length > 0
+        ? networks.items[networks.activeNetwork].chainId
+        : '',
+    feeToken: DEFAULT_FEE_TOKEN, // Default fee token
   });
   const [errors, setErrors] = useState({ amount: '', address: '' });
 
@@ -45,7 +52,10 @@ export const SendModalView = ({ closeModal }: Props) => {
     switch (fieldName) {
       case 'amount':
         if (fieldValue !== '' && fieldValue !== '.') {
-          const inputAmount = ethers.utils.parseUnits(fieldValue, wallet.erc20TokenBalanceSelected.decimals);
+          const inputAmount = ethers.utils.parseUnits(
+            fieldValue,
+            wallet.erc20TokenBalanceSelected.decimals,
+          );
           const userBalance = wallet.erc20TokenBalanceSelected.amount;
           if (inputAmount.gt(userBalance)) {
             setErrors((prevErrors) => ({
@@ -78,8 +88,13 @@ export const SendModalView = ({ closeModal }: Props) => {
           }
         }
         break;
+      case 'feeToken':
+        setFields((prevFields) => ({
+          ...prevFields,
+          feeToken: fieldValue as FeeToken,
+        }));
+        break;
     }
-
     setFields((prevFields) => ({
       ...prevFields,
       [fieldName]: fieldValue,
@@ -87,7 +102,12 @@ export const SendModalView = ({ closeModal }: Props) => {
   };
 
   const confirmEnabled = () => {
-    return !errors.address && !errors.amount && fields.amount.length > 0 && fields.address.length > 0;
+    return (
+      !errors.address &&
+      !errors.amount &&
+      fields.amount.length > 0 &&
+      fields.address.length > 0
+    );
   };
 
   return (
@@ -121,12 +141,33 @@ export const SendModalView = ({ closeModal }: Props) => {
               decimalsMax={wallet.erc20TokenBalanceSelected.decimals}
               asset={wallet.erc20TokenBalanceSelected}
             />
+            <SeparatorSmall />
+            <div>
+              <label htmlFor="feeToken">
+                Select Token for Transaction Fees
+              </label>
+              <DropDown
+                value={fields.feeToken}
+                options={Object.values(FeeToken).map((token) => ({
+                  label: token,
+                  value: token,
+                }))}
+                onChange={(e) => handleChange('feeToken', e.value)}
+              />
+            </div>
           </Wrapper>
           <Buttons>
-            <ButtonStyled onClick={closeModal} backgroundTransparent borderVisible>
+            <ButtonStyled
+              onClick={closeModal}
+              backgroundTransparent
+              borderVisible
+            >
               CANCEL
             </ButtonStyled>
-            <ButtonStyled onClick={() => setSummaryModalOpen(true)} enabled={confirmEnabled()}>
+            <ButtonStyled
+              onClick={() => setSummaryModalOpen(true)}
+              enabled={confirmEnabled()}
+            >
               CONFIRM
             </ButtonStyled>
           </Buttons>
@@ -139,6 +180,7 @@ export const SendModalView = ({ closeModal }: Props) => {
           address={fields.address}
           amount={fields.amount}
           chainId={fields.chainId}
+          selectedFeeToken={fields.feeToken} // Pass the selected fee token
         />
       )}
     </>

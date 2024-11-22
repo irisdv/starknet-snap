@@ -1,14 +1,14 @@
 {
   "openrpc": "1.0.0-rc1",
   "info": {
-    "version": "2.8.0",
+    "version": "2.11.0",
     "title": "Starknet MetaMask Snap API",
     "license": {}
   },
   "servers": [],
   "methods": [
     {
-      "name": "starkNet_extractPrivateKey",
+      "name": "starkNet_displayPrivateKey",
       "summary": "Extract private key from deployed Starknet account and display in MetaMask",
       "paramStructure": "by-name",
       "params": [
@@ -1486,7 +1486,14 @@
       },
       "TXN_STATUS": {
         "type": "string",
-        "enum": ["UNKNOWN", "RECEIVED", "PENDING", "ACCEPTED_ON_L2", "ACCEPTED_ON_L1", "REJECTED"],
+        "enum": [
+          "UNKNOWN",
+          "RECEIVED",
+          "PENDING",
+          "ACCEPTED_ON_L2",
+          "ACCEPTED_ON_L1",
+          "REJECTED"
+        ],
         "description": "The status of the transaction. May be unknown in case node is not aware of it"
       },
       "VOYAGER_TXN_TYPE": {
