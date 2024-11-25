@@ -184,7 +184,8 @@ export enum FeeTokenUnit {
   STRK = 'fri',
 }
 
-export interface GetAddrFromStarkNameRequestParam extends BaseRequestParams {
+export type GetAddrFromStarkNameRequestParam = {
   starkName: string;
-}
+} & BaseRequestParams;
+
 /* eslint-enable */

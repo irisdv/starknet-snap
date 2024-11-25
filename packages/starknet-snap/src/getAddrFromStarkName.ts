@@ -10,7 +10,11 @@ export async function getAddrFromStarkName(params: ApiParams) {
     const requestParamsObj = requestParams as GetAddrFromStarkNameRequestParam;
 
     if (!requestParamsObj.starkName) {
-      throw new Error(`The given stark name need to be non-empty string, got: ${toJson(requestParamsObj)}`);
+      throw new Error(
+        `The given stark name need to be non-empty string, got: ${toJson(
+          requestParamsObj,
+        )}`,
+      );
     }
 
     const starkName = requestParamsObj.starkName;

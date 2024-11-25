@@ -42,6 +42,7 @@ export const SendModalView = ({ closeModal }: Props) => {
     feeToken: DEFAULT_FEE_TOKEN, // Default fee token
   });
   const [errors, setErrors] = useState({ amount: '', address: '' });
+  const [resolvedAddress, setResolvedAddress] = useState('');
 
   const handleChange = (fieldName: string, fieldValue: string) => {
     //Check if input amount does not exceed user balance
@@ -72,7 +73,7 @@ export const SendModalView = ({ closeModal }: Props) => {
           } else if (isValidStarkName(fieldValue)) {
             getAddrFromStarkName(fieldValue, chainId).then((address) => {
               if (isValidAddress(address)) {
-                fieldValue = address;
+                setResolvedAddress(address);
               } else {
                 setErrors((prevErrors) => ({
                   ...prevErrors,
@@ -126,6 +127,7 @@ export const SendModalView = ({ closeModal }: Props) => {
               label="To"
               placeholder="Paste recipient address or .stark name here"
               onChange={(value) => handleChange('address', value.target.value)}
+              onResolvedAddress={(address) => setResolvedAddress(address)}
             />
             <SeparatorSmall />
             <MessageAlert
@@ -177,7 +179,7 @@ export const SendModalView = ({ closeModal }: Props) => {
       {summaryModalOpen && (
         <SendSummaryModal
           closeModal={closeModal}
-          address={fields.address}
+          address={resolvedAddress}
           amount={fields.amount}
           chainId={fields.chainId}
           selectedFeeToken={fields.feeToken} // Pass the selected fee token
